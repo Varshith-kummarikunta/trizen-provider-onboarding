@@ -138,7 +138,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@trizen.com\",\n  \"password\": \"AdminPassword@123\"\n}"
+              "raw": "{\n  \"email\": \"admin@trizen.com\",\n  \"password\": \"Admin@123\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/auth/login",

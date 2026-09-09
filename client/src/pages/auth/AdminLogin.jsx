@@ -15,7 +15,7 @@ export const AdminLogin = () => {
   // Quick fill helper for assignment evaluation convenience
   const fillDemoAdmin = () => {
     setEmail('admin@trizen.com');
-    setPassword('AdminPassword@123');
+    setPassword('Admin@123');
     setError('');
   };
 
@@ -72,7 +72,7 @@ export const AdminLogin = () => {
           <div className="text-xs text-purple-950">
             <p className="font-semibold">Demo Evaluation Credentials</p>
             <p className="text-purple-700 font-mono text-[11px] mt-0.5">
-              admin@trizen.com
+              admin@trizen.com / Admin@123
             </p>
           </div>
           <button

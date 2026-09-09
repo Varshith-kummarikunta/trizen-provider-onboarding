@@ -6,8 +6,17 @@ Designed for **Trizen Ventures** Full Stack Development Intern technical assignm
 
 ---
 
+## Live Deployments
+
+* **Frontend Web Portal (Vercel):** [https://trizen-provider-onboarding.vercel.app](https://trizen-provider-onboarding.vercel.app/)
+* **Backend REST API (Render):** [https://trizen-provider-onboarding-api.onrender.com](https://trizen-provider-onboarding-api.onrender.com/)
+* **API Health Check:** [https://trizen-provider-onboarding-api.onrender.com/api/health](https://trizen-provider-onboarding-api.onrender.com/api/health)
+
+---
+
 ## Table of Contents
-1. [System Architecture](#system-architecture)
+1. [Live Deployments](#live-deployments)
+2. [System Architecture](#system-architecture)
 2. [Key Features](#key-features)
    - [Service Provider Experience](#service-provider-experience)
    - [Administrative Moderation Console](#administrative-moderation-console)
@@ -175,13 +184,11 @@ trizen-provider-onboarding/
 │   ├── uploads/                         # Gitignored directory for local development uploads
 │   ├── app.js                           # Express application configuration
 │   ├── server.js                        # Server listener and graceful shutdown
-│   ├── verify-backend.js                # Automated backend test suite
 │   └── package.json
 │
 ├── postman/
 │   └── Trizen-Onboarding.postman_collection.json # 16-request postman collection with automated test scripts
 ├── screenshots/                         # Captured user flow screens
-├── test-e2e.js                          # Full-system End-to-End workflow automated test suite
 ├── .gitignore                           # Excludes node_modules, .env, uploads/*, dist/
 ├── .env.example                         # Environment configuration reference
 ├── package.json                         # Root convenience scripts (dev, seed, install)
@@ -291,7 +298,7 @@ The application implements an **Automatic Dual-Mode Upload Abstraction** located
 ### 1. Clone & Install Dependencies
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/trizen-provider-onboarding.git
+git clone https://github.com/Varshith-kummarikunta/trizen-provider-onboarding.git
 cd trizen-provider-onboarding
 
 # Install all dependencies across root, server, and client in one command:
@@ -312,7 +319,7 @@ CLIENT_URL=http://localhost:5173
 # Demo Admin Seed Configuration
 ADMIN_NAME=Trizen Platform Admin
 ADMIN_EMAIL=admin@trizen.com
-ADMIN_PASSWORD=AdminPassword@123
+ADMIN_PASSWORD=Admin@123
 
 # Cloudinary (Leave blank for automatic local storage fallback in development)
 CLOUDINARY_CLOUD_NAME=
@@ -326,7 +333,7 @@ VITE_API_URL=http://localhost:5000/api
 ```
 
 ### 3. Seed Demo Administrator
-Run the automated seed script to provision the default administrative account:
+The backend automatically bootstraps the administrator account on startup. You can also run the seed script manually at any time:
 ```bash
 npm run seed:admin
 # Output: Successfully created Demo Admin: admin@trizen.com
@@ -354,14 +361,16 @@ Visit the application at: **`http://localhost:5173`** (or displayed Vite local p
 
 ## Demo Credentials
 
-For convenience during evaluation, you may use these credentials or register new accounts freely:
+For testing and evaluation:
+* **Administrator:** The admin account is active in production Atlas and automatically maintained on server boot.
+* **Service Provider:** Evaluators can register new service provider accounts freely via the sign-up portal. Note that `rajesh.sharma@example.com` is an **example payload** used in Postman tests and is **not** a pre-seeded production account.
 
-| Role | Email | Password | Access Portal |
-| :--- | :--- | :--- | :--- |
-| **Administrator** | `admin@trizen.com` | `AdminPassword@123` | [Admin Portal (`/admin/login`)](http://localhost:5173/admin/login) *(Features 1-click Auto-Fill button)* |
-| **Test Provider** | `rajesh.sharma@example.com` | `ProviderPass@123` | [Partner Sign In (`/login`)](http://localhost:5173/login) |
+| Role | Email | Password | Access Portal | Status / Access Type |
+| :--- | :--- | :--- | :--- | :--- |
+| **Administrator** | `admin@trizen.com` | `Admin@123` | [Admin Portal (`/admin/login`)](https://trizen-provider-onboarding.vercel.app/admin/login) *(or local `/admin/login`)* | **Active Pre-seeded Admin** *(Features 1-click Auto-Fill button)* |
+| **Test Provider** | `rajesh.sharma@example.com` *(or any email)* | `ProviderPass@123` | [Partner Sign In (`/login`)](https://trizen-provider-onboarding.vercel.app/login) / [Registration (`/register`)](https://trizen-provider-onboarding.vercel.app/register) | **Example Registration Payload** *(Register freely via UI or Postman)* |
 
-*Note: The Admin Login portal includes a **Demo Quick-Fill button** that fills credentials with one click for effortless evaluation testing.*
+*Note: The Admin Login portal includes a **Demo Quick-Fill button** that fills credentials (`admin@trizen.com / Admin@123`) with one click for effortless evaluation testing.*
 
 ---
 
@@ -425,10 +434,12 @@ A fully configured Postman Collection is located in:
    - `MONGODB_URI`: `<Your MongoDB Atlas connection string>`
    - `JWT_SECRET`: `<Generate a secure random string>`
    - `CLIENT_URL`: `<Your Vercel frontend URL, e.g. https://trizen-onboarding.vercel.app>`
+   - `ADMIN_EMAIL`: `admin@trizen.com` (Optional, defaults to `admin@trizen.com`)
+   - `ADMIN_PASSWORD`: `Admin@123` (Optional, defaults to `Admin@123`)
    - `CLOUDINARY_CLOUD_NAME`: `<Your Cloudinary cloud name>`
    - `CLOUDINARY_API_KEY`: `<Your Cloudinary API key>`
    - `CLOUDINARY_API_SECRET`: `<Your Cloudinary API secret>`
-6. Deploy the service and run `node utils/seedAdmin.js` once in Render Shell to seed the admin account.
+6. Deploy the service. The backend server automatically initializes and verifies the administrator account on startup via `bootstrapAdmin()`. (You can also run `node utils/seedAdmin.js` manually in the Render Shell or locally).
 
 ### 3. Frontend Deployment (Vercel)
 1. Log into [Vercel](https://vercel.com/) &rarr; Click **Add New** &rarr; **Project**.
@@ -479,7 +490,7 @@ A recommended **3 to 5 minute walk-through script** for interview demonstration:
   - Profile automatically unlocks &rarr; provider uploads replacement file &rarr; resubmits &rarr; status returns to **PENDING**.
 
 ### [3:45 - 4:15] Code & Quality Highlights
-- Briefly highlight clean code structure: modular controllers, role-based middlewares, centralized error handling, and 100% passing automated test suite (`verify-backend.js` and `test-e2e.js`).
+- Briefly highlight clean code structure: modular controllers, role-based middlewares, centralized error handling, and comprehensive Postman collection with automated test scripts.
 
 ---
 
@@ -507,7 +518,7 @@ A recommended **3 to 5 minute walk-through script** for interview demonstration:
 
 ## Final Verification Summary
 
-- **Automated Backend Suite (`npm run verify:backend`)**: 16/16 tests passing.
-- **Automated Full E2E Workflow Suite (`node test-e2e.js`)**: All scenarios (Happy Path, Rejection/Resubmission, Role Security) passing.
-- **Frontend Production Build (`npm run build`)**: Zero compilation errors; production bundle optimized.
-- **Postman Collection**: Fully functional with environment variables and response-capturing test scripts.
+- **Frontend Production Build (`npm run build` in `client`)**: Passed with 0 compilation errors; optimized bundle size.
+- **Backend Syntax & Diagnostics Verification (`node -c`)**: All Express controllers, models, routes, and middlewares verified.
+- **Automated Postman Collection (`postman/Trizen-Onboarding.postman_collection.json`)**: 16 comprehensive requests covering authentication, provider onboarding, Cloudinary document uploads, and admin approval/rejection flows with automated assertion tests.
+- **Live Production E2E Verification**: Full provider lifecycle (Draft &rarr; Pending &rarr; Approved, Draft &rarr; Pending &rarr; Rejected &rarr; Resubmitted) verified on live Vercel and Render deployments.

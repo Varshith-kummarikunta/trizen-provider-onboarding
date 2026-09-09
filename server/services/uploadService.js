@@ -30,14 +30,10 @@ const uploadFile = async (file, folder = 'trizen') => {
         },
         (error, result) => {
           if (error) {
-            console.error('[Cloudinary Upload Error Diagnostic]', {
+            console.error('[UploadService] Cloudinary upload error:', {
               message: error.message,
-              name: error.name,
               http_code: error.http_code,
-              error: error.error,
               folder: `trizen/${folder}`,
-              mimetype: file.mimetype,
-              size: file.size,
               fileName: file.originalname,
             });
             return reject(error);
