@@ -39,10 +39,14 @@ const errorHandler = (err, req, res, next) => {
     }
   }
 
-  // In development, log the error for diagnostics
-  if (process.env.NODE_ENV !== 'production') {
-    console.error('[Error Handler]', err);
-  }
+   // Log errors for diagnostics in all environments
+  console.error('[Error Handler]', {
+    name: err.name,
+    message: err.message,
+    code: err.code,
+    http_code: err.http_code,
+    stack: err.stack,
+  });
 
   return sendError(res, message, errors, statusCode);
 };
