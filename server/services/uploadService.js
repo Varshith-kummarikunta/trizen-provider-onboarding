@@ -29,7 +29,19 @@ const uploadFile = async (file, folder = 'trizen') => {
           resource_type: 'auto',
         },
         (error, result) => {
-          if (error) return reject(error);
+          if (error) {
+            console.error('[Cloudinary Upload Error Diagnostic]', {
+              message: error.message,
+              name: error.name,
+              http_code: error.http_code,
+              error: error.error,
+              folder: `trizen/${folder}`,
+              mimetype: file.mimetype,
+              size: file.size,
+              fileName: file.originalname,
+            });
+            return reject(error);
+          }
           resolve({
             url: result.secure_url,
             publicId: result.public_id,
