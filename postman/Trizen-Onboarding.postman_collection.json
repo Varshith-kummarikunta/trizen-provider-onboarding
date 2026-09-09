@@ -1,0 +1,447 @@
+{
+  "info": {
+    "_postman_id": "c71a3962-d98b-4c22-b5e8-trizen0001",
+    "name": "Trizen Provider Onboarding Portal API",
+    "description": "Comprehensive Postman API collection for Trizen Ventures Service Provider Onboarding Portal. Covers Authentication, Provider Onboarding lifecycle, Document uploads, and Administrative Moderation workflows.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "providerToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "providerProfileId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "documentId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "1.1 Provider Registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('providerToken', jsonData.data.token);",
+                  "    if (jsonData.data.profile && jsonData.data.profile.id) {",
+                  "        pm.collectionVariables.set('providerProfileId', jsonData.data.profile.id);",
+                  "    }",
+                  "    console.log('Saved providerToken and providerProfileId');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rajesh Sharma\",\n  \"email\": \"rajesh.sharma@example.com\",\n  \"password\": \"ProviderPass@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "1.2 Provider Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('providerToken', jsonData.data.token);",
+                  "    console.log('Updated providerToken');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rajesh.sharma@example.com\",\n  \"password\": \"ProviderPass@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "1.3 Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('adminToken', jsonData.data.token);",
+                  "    console.log('Saved adminToken');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@trizen.com\",\n  \"password\": \"AdminPassword@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "1.4 Get Current User (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{providerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Provider Onboarding",
+      "item": [
+        {
+          "name": "2.1 Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{providerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/providers/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["providers", "me"]
+            }
+          }
+        },
+        {
+          "name": "2.2 Update Profile (Step 1-3)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{providerToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Rajesh Sharma\",\n  \"phone\": \"+91 9876543210\",\n  \"bio\": \"Certified residential and commercial master electrician with 8+ years of professional installation experience.\",\n  \"categories\": [\"Electrician\", \"Appliance Repair\"],\n  \"skills\": [\"Switchboard Wiring\", \"Appliance Installation\", \"Inverter Servicing\"],\n  \"experience\": 8,\n  \"serviceLocations\": [\"Bengaluru - Whitefield\", \"Bengaluru - Indiranagar\", \"Bengaluru - Koramangala\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/providers/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["providers", "me"]
+            }
+          }
+        },
+        {
+          "name": "2.3 Upload Profile Photo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{providerToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "photo",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/providers/me/photo",
+              "host": ["{{baseUrl}}"],
+              "path": ["providers", "me", "photo"]
+            }
+          }
+        },
+        {
+          "name": "2.4 Upload Verification Document",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.success && jsonData.data && jsonData.data.document) {",
+                  "    pm.collectionVariables.set('documentId', jsonData.data.document._id);",
+                  "    console.log('Saved documentId');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{providerToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "documentType",
+                  "value": "identity",
+                  "type": "text"
+                },
+                {
+                  "key": "document",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/providers/me/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["providers", "me", "documents"]
+            }
+          }
+        },
+        {
+          "name": "2.5 Delete Verification Document",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{providerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/providers/me/documents/{{documentId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["providers", "me", "documents", "{{documentId}}"]
+            }
+          }
+        },
+        {
+          "name": "2.6 Submit Application for Verification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{providerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/providers/me/submit",
+              "host": ["{{baseUrl}}"],
+              "path": ["providers", "me", "submit"]
+            }
+          }
+        },
+        {
+          "name": "2.7 Get Application Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{providerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/providers/me/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["providers", "me", "status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Admin Review & Management",
+      "item": [
+        {
+          "name": "3.1 Dashboard Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard", "stats"]
+            }
+          }
+        },
+        {
+          "name": "3.2 List Providers (with Pagination, Search, Filter)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/providers?page=1&limit=10&search=&status=pending&category=",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "providers"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "search", "value": "" },
+                { "key": "status", "value": "pending" },
+                { "key": "category", "value": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3.3 Get Provider Dossier by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/providers/{{providerProfileId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "providers", "{{providerProfileId}}"]
+            }
+          }
+        },
+        {
+          "name": "3.4 Approve Provider Application",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/providers/{{providerProfileId}}/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "providers", "{{providerProfileId}}", "approve"]
+            }
+          }
+        },
+        {
+          "name": "3.5 Reject Provider Application (with Remarks)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"remarks\": \"Please upload a clearer identity proof document showing your full address.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/providers/{{providerProfileId}}/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "providers", "{{providerProfileId}}", "reject"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
