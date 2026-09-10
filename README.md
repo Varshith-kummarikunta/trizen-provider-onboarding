@@ -6,16 +6,19 @@ Designed for **Trizen Ventures** Full Stack Development Intern technical assignm
 
 ---
 
-## Live Deployments
+## Live Demo & Video
 
+* **Demonstration Video (Google Drive):** [https://drive.google.com/file/d/1MxVYhcBs-ghfUa7Nj_uXwPu9eUgKXCCx/view?usp=sharing](https://drive.google.com/file/d/1MxVYhcBs-ghfUa7Nj_uXwPu9eUgKXCCx/view?usp=sharing)
+  *(Duration: 3 minutes 20 seconds — recorded on the live production deployment, covering the complete provider onboarding lifecycle, Cloudinary document uploads, application locking, admin review, and resubmission).*
 * **Frontend Web Portal (Vercel):** [https://trizen-provider-onboarding.vercel.app](https://trizen-provider-onboarding.vercel.app/)
 * **Backend REST API (Render):** [https://trizen-provider-onboarding-api.onrender.com](https://trizen-provider-onboarding-api.onrender.com/)
 * **API Health Check:** [https://trizen-provider-onboarding-api.onrender.com/api/health](https://trizen-provider-onboarding-api.onrender.com/api/health)
+* **Visual Screenshots:** High-resolution screenshots of all primary workflows and responsive views are already included in the [Visual Screenshots Gallery](#visual-screenshots-gallery) below and under the `screenshots/` directory.
 
 ---
 
 ## Table of Contents
-1. [Live Deployments](#live-deployments)
+1. [Live Demo & Video](#live-demo--video)
 2. [System Architecture](#system-architecture)
 2. [Key Features](#key-features)
    - [Service Provider Experience](#service-provider-experience)
